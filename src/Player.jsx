@@ -2,13 +2,12 @@ import React, { useState } from 'react'
 
 import Track from './Track'
 
-const Player = ({token, userId}) => {
+const Player = ({token}) => {
 	const [currentTrackPreviewUrl, setCurrentTrackPreviewUrl] = useState(null)
 	const [currentTrackName, setCurrentTrackName] = useState(null)
 	const [currentTrackImageUrl, setCurrentTrackImageUrl] = useState(null)
 	const [currentTrackArtists, setCurrentTrackArtists] = useState(null)
 	const [playing, setPlaying] = useState(false)
-	const [tracks, setTracks] = useState(null)
 	const [trackIndex, setTrackIndex] = useState(0)
 
 	const handlePlayButtonClicked = (e) => {
@@ -62,7 +61,6 @@ const Player = ({token, userId}) => {
 				setCurrentTrackImageUrl(data.items[trackIndex].album.images[0].url)
 				setTrackIndex(trackIndex + 1)
 			})
-
 	}
 
 	return (
