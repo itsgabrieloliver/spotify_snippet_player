@@ -8,26 +8,34 @@ const Player = ({token, userId}) => {
 	const [currentTrackImageUrl, setCurrentTrackImageUrl] = useState(null)
 	const [currentTrackArtists, setCurrentTrackArtists] = useState(null)
 	const [playing, setPlaying] = useState(false)
-	const [index, setIndex] = useState(0)
+	const [tracks, setTracks] = useState(null)
+	const [trackIndex, setTrackIndex] = useState(0)
 
 	const handlePlayButtonClicked = (e) => {
 		e.preventDefault()
-		fetch(`https://api.spotify.com/v1/me/player/recently-played?access_token=${token}`, {
-			method: 'GET'
+		setTrackIndex(0)
+		fetch(`https://api.spotify.com/v1/me/top/tracks`, {
+			method: 'GET',
+			withCredentials: true,
+			headers: {
+				'Authorization': `Bearer ${token}`,
+				'Content-Type': 'application/json'
+			}
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				setCurrentTrackPreviewUrl(data.items[index].track.preview_url)
-				setCurrentTrackArtists(data.items[index].track.artists)
-				setCurrentTrackName(data.items[index].track.name)
-				setCurrentTrackImageUrl(data.items[index].track.album.images[0].url)
+				setCurrentTrackPreviewUrl(data.items[trackIndex].preview_url)
+				setCurrentTrackArtists(data.items[trackIndex].artists)
+				setCurrentTrackName(data.items[trackIndex].name)
+				setCurrentTrackImageUrl(data.items[trackIndex].album.images[0].url)
+				setTrackIndex(trackIndex + 1)
 				setPlaying(true)
-				setIndex(index + 1)
 			})
 	}
 
 	const handlePauseButtonClicked = (e) => {
 		e.preventDefault()
+		setTrackIndex(0)
 		setCurrentTrackPreviewUrl(null)
 		setCurrentTrackName(null)
 		setCurrentTrackImageUrl(null)
@@ -38,17 +46,23 @@ const Player = ({token, userId}) => {
 	const handleNextTrackButtonClicked = (e) => {
 		e.preventDefault()
 		setCurrentTrackPreviewUrl(null)
-		fetch(`https://api.spotify.com/v1/me/player/recently-played?access_token=${token}`, {
-			method: 'GET'
+		fetch(`https://api.spotify.com/v1/me/top/tracks`, {
+			method: 'GET',
+			withCredentials: true,
+			headers: {
+				'Authorization': `Bearer ${token}`,
+				'Content-Type': 'application/json'
+			}
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				setCurrentTrackPreviewUrl(data.items[index].track.preview_url)
-				setCurrentTrackArtists(data.items[index].track.artists)
-				setCurrentTrackName(data.items[index].track.name)
-				setCurrentTrackImageUrl(data.items[index].track.album.images[0].url)
-				setIndex(index + 1)
+				setCurrentTrackPreviewUrl(data.items[trackIndex].preview_url)
+				setCurrentTrackArtists(data.items[trackIndex].artists)
+				setCurrentTrackName(data.items[trackIndex].name)
+				setCurrentTrackImageUrl(data.items[trackIndex].album.images[0].url)
+				setTrackIndex(trackIndex + 1)
 			})
+
 	}
 
 	return (

@@ -12,7 +12,8 @@ const App = () => {
 		'user-modify-playback-state',
 		'user-read-playback-state',
 		'user-read-email',
-		'user-read-recently-played'
+		'user-read-recently-played',
+		'user-top-read'
 	]
 
 	const [token, setToken] = useState(null)
