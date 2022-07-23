@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 
 import Track from './Track'
 
+import ReactAudioPlayer from 'react-audio-player'
+
 const Player = ({token}) => {
 	const [currentTrackPreviewUrl, setCurrentTrackPreviewUrl] = useState(null)
 	const [currentTrackName, setCurrentTrackName] = useState(null)
@@ -66,13 +68,14 @@ const Player = ({token}) => {
 	return (
 		<div className={'flex flex-col items-center text-white'}>
 			{
-				currentTrackPreviewUrl &&
-				<audio autoPlay>
-					<source src={currentTrackPreviewUrl} />
-				</audio>
+				currentTrackImageUrl && <Track name={currentTrackName} image_url={currentTrackImageUrl} artists={currentTrackArtists} />
 			}
 			{
-				currentTrackImageUrl && <Track name={currentTrackName} image_url={currentTrackImageUrl} artists={currentTrackArtists} />
+				currentTrackPreviewUrl &&
+				<audio type={'audio/mp3'} autoPlay={true} controls={true} className={'hidden'}>
+					<source src={currentTrackPreviewUrl} />
+				</audio>
+				// <ReactAudioPlayer className={'invisible'} src={currentTrackPreviewUrl} autoPlay={true} controls loop={true} />
 			}
 			<div className={'mt-5 flex'}>
 				{
@@ -89,7 +92,6 @@ const Player = ({token}) => {
 
 				}
 			</div>
-
 		</div>
 	)
 }
